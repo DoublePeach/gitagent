@@ -1,0 +1,39 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: release-center
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    # 等待数据库就绪（生产环境建议用 healthcheck 替代 depends_on condition）
+    depends_on:
+      - db
+    networks:
+      - release-net
+
+  # 本地开发用 MySQL（生产环境使用外部 RDS 时删除此 service，DATABASE_URL 直接指向 RDS）
+  db:
+    image: mysql:8.0
+    container_name: release-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "333"
+      MYSQL_DATABASE: release_center
+      MYSQL_CHARSET: utf8mb4
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - release-net
+
+volumes:
+  mysql_data:
+
+networks:
+  release-net:
+    driver: bridge
