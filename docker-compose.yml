@@ -21,9 +21,10 @@ services:
     container_name: release-mysql
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: "333"
-      MYSQL_DATABASE: release_center
-      MYSQL_CHARSET: utf8mb4
+      # 让敏感信息从 .env 注入（避免在 docker-compose.yml 中硬编码）
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_CHARSET: ${MYSQL_CHARSET:-utf8mb4}
     ports:
       - "3306:3306"
     volumes:

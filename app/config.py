@@ -14,7 +14,8 @@ class Settings(BaseSettings):
     ENABLE_SCHEDULER: bool = False
 
     # 数据库（MySQL 异步驱动 aiomysql）
-    DATABASE_URL: str = "mysql+aiomysql://root:333@159.75.51.30:3306/release_center?charset=utf8mb4"
+    # 必须在 .env 中配置（不要在代码里硬编码账号密码/内网地址）
+    DATABASE_URL: str = ""
 
     # LLM（阿里云百炼，OpenAI 兼容接口）
     OPENAI_API_KEY: str = ""
